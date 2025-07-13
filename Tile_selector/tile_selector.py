@@ -4,14 +4,15 @@ from PySide6.QtCore import Qt, QRect
 
 
 class TileLabel(QLabel):
-    def __init__(self, pixmap, tile_index, parent=None):
+    def __init__(self, pixmap, tile_index, selector, parent=None):
         super().__init__(parent)
-        self.setPixmap(pixmap)
+        self.selector = selector  # Store reference to TileSelector
         self.tile_index = tile_index
+        self.setPixmap(pixmap)
         self.setFixedSize(pixmap.width(), pixmap.height())
 
     def mousePressEvent(self, event):
-        self.parent().tile_selected(self.tile_index)
+        self.selector.tile_selected(self.tile_index)
 
 
 class TileSelector(QWidget):
