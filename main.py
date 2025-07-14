@@ -2,7 +2,7 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QMenu
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt
-from Tile_editor.tile_editor import MainEditorWindow
+from Main_editor_window.main_editor_window import MainEditorWindow  # ✅ Ensure this import path is correct
 
 class MainWindow(QMainWindow):
     def __init__(self):
