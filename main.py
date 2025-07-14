@@ -1,21 +1,22 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QMenu, QAction
+from PySide6.QtWidgets import QApplication, QMainWindow, QMenu
+from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt
-from Tile_editor.tile_editor import MainEditorWindow  # ✅ This is your main window with both canvas & selector
+from Tile_editor.tile_editor import MainEditorWindow as BaseEditorWindow
 
-def main():
-    app = QApplication(sys.argv)
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
 
-    window = MainEditorWindow()
-    window.resize(1600, 900)
-    window.setWindowTitle("Retro Tile Map Editor")
-    window.setWindowFlag(Qt.Window)
-    window.show()
+        # Use your existing QWidget as the central widget
+        self.editor = BaseEditorWindow()
+        self.setCentralWidget(self.editor)
 
-    sys.exit(app.exec())
-    
-def create_menus(self):
-        # Get the menu bar (automatically placed at the top)
+        self.setWindowTitle("Retro Tile Map Editor")
+        self.resize(1600, 900)
+        self.create_menus()
+
+    def create_menus(self):
         menu_bar = self.menuBar()
 
         # --- File Menu ---
@@ -30,7 +31,7 @@ def create_menus(self):
         file_menu.addSeparator()
         file_menu.addAction(exit_action)
 
-        exit_action.triggered.connect(self.close)  # Close app when Exit is clicked
+        exit_action.triggered.connect(self.close)
 
         # --- Edit Menu ---
         edit_menu = menu_bar.addMenu("Edit")
@@ -45,8 +46,11 @@ def create_menus(self):
         help_menu.addAction(about_action)
 
 
-if __name__ == "__main__":
-    app = QApplication([])
-    window = MainEditorWindow()
+def main():
+    app = QApplication(sys.argv)
+    window = MainWindow()
     window.show()
-    app.exec()
+    sys.exit(app.exec())
+
+if __name__ == "__main__":
+    main()
