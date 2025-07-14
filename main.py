@@ -2,14 +2,14 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QMenu
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt
-from Tile_editor.tile_editor import MainEditorWindow as BaseEditorWindow
+from Tile_editor.tile_editor import MainEditorWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
         # Use your existing QWidget as the central widget
-        self.editor = BaseEditorWindow()
+        self.editor = MainEditorWindow()
         self.setCentralWidget(self.editor)
 
         self.setWindowTitle("Retro Tile Map Editor")
@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
         file_menu.addAction(exit_action)
 
         exit_action.triggered.connect(self.close)
+        open_action.triggered.connect(self.load_tileset)
 
         # --- Edit Menu ---
         edit_menu = menu_bar.addMenu("Edit")
@@ -44,6 +45,11 @@ class MainWindow(QMainWindow):
         help_menu = menu_bar.addMenu("Help")
         about_action = QAction("About", self)
         help_menu.addAction(about_action)
+        
+    def load_tileset(self):
+        print("Open clicked! Load your tileset here.")
+    # You could forward the call to the TileSelector:
+        self.editor.tile_selector.load_tileset_dialog()
 
 
 def main():

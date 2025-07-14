@@ -27,6 +27,7 @@ class TileSelector(QWidget):
         self.scroll_area = QScrollArea()
         self.container = QWidget()
         self.grid = QGridLayout(self.container)
+        self.grid.setSpacing(1)
 
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.container)
