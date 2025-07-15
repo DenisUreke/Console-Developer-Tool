@@ -3,11 +3,9 @@ from Models.setup_model import SetupModel
 from PySide6.QtGui import QPainter, QPixmap, QMouseEvent
 from PySide6.QtCore import Qt, QRect
 from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from Tile_selector.tile_selector import TileSelector
 
 class MapCanvas(QWidget):
-    def __init__(self, tile_selector: TileSelector, model: SetupModel = None):
+    def __init__(self, tile_selector, model: SetupModel = None):
         super().__init__()
         self.tile_selector = tile_selector
         self.model = model
