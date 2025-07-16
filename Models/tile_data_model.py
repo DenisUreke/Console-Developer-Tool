@@ -27,7 +27,6 @@ class TileData:
         # --- Hazards / Environment Effects ---
         self.damage: int = 0
         self.kills_player: bool = False
-        self.trap: bool = False
         self.effect: Optional[str] = None
         self.healing: int = 0
 
@@ -56,8 +55,6 @@ class TileData:
         self.alpha: float = 1.0
         self.animated: bool = False
         self.animation_id: Optional[str] = None
-        self.mirror_x: bool = False
-        self.mirror_y: bool = False
 
         # --- Metadata ---
         self.region: Optional[str] = None

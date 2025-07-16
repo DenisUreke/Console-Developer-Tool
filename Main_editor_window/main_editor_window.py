@@ -12,7 +12,9 @@ class MainEditorWindow(QWidget):
         self.setup_model = SetupModel()
         self.tile_selector = TileSelector(model=self.setup_model)
         self.canvas = MapCanvas(self.tile_selector, model=self.setup_model)
+        self.tile_data_view = TileDataView()
 
         layout = QHBoxLayout(self)
         layout.addWidget(self.tile_selector)
         layout.addWidget(self.canvas)
+        layout.addWidget(self.tile_data_view)
