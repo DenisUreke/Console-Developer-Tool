@@ -2,10 +2,10 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QFormLayout, QL
 from Models.tile_data_model import TileData
 
 class TileDataView(QWidget):
-    def __init__ (self, tile_data: TileData):
+    def __init__ (self):
         super().__init__()
         
-        self.tile_data = tile_data
+        '''self.tile_data: dict[tuple[int, int], TileData] = {}
         
         layout = QFormLayout()
         layout.addRow("index:", QLabel(str(tile_data.index)))
@@ -25,7 +25,7 @@ class TileDataView(QWidget):
             cb.setEnabled(False)
             layout.addRow(f"Collision {side}:", cb)
 
-        self.setLayout(layout)
+        self.setLayout(layout)'''
         
         
         
