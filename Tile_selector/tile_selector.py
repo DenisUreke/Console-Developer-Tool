@@ -33,6 +33,8 @@ class TileSelector(QWidget):
 
         self.scroll_area.setWidgetResizable(True) # for resizing the scroll area
         self.scroll_area.setWidget(self.container) # the container is added to the scroll area
+        self.scroll_area.setFixedHeight(900)
+        self.scroll_area.setFixedWidth(700)
         layout.addWidget(self.scroll_area) # the scroll area is added to the main layout
 
         self.load_tileset_dialog()

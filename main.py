@@ -21,16 +21,13 @@ class MainWindow(QMainWindow):
 
         # --- File Menu ---
         file_menu = menu_bar.addMenu("File")
-
         open_action = QAction("Open", self)
         save_action = QAction("Save", self)
         exit_action = QAction("Exit", self)
-
         file_menu.addAction(open_action)
         file_menu.addAction(save_action)
         file_menu.addSeparator()
         file_menu.addAction(exit_action)
-
         exit_action.triggered.connect(self.close)
         open_action.triggered.connect(self.load_tileset)
 
@@ -41,15 +38,28 @@ class MainWindow(QMainWindow):
         edit_menu.addAction(undo_action)
         edit_menu.addAction(redo_action)
 
+        # --- Window Menu ---
+        window_menu = menu_bar.addMenu("Window")
+        window_action = QAction("Tile Data View", self)
+        window_action.triggered.connect(self.show_tile_data_window)
+        window_menu.addAction(window_action)
+
+
         # --- Help Menu ---
         help_menu = menu_bar.addMenu("Help")
         about_action = QAction("About", self)
         help_menu.addAction(about_action)
+
         
     def load_tileset(self):
         print("Open clicked! Load your tileset here.")
-    # You could forward the call to the TileSelector:
+    # forward the call to the TileSelector:
         self.editor.tile_selector.load_tileset_dialog()
+    
+    def show_tile_data_window(self):
+    # This function runs when you click the "Tile Data View" menu item
+        self.editor.tile_data_window.show()
+        self.editor.tile_data_window.raise_()
 
 
 def main():
