@@ -13,7 +13,18 @@ class TileLabel(QLabel):
         self.setFixedSize(pixmap.width(), pixmap.height())
 
     def mousePressEvent(self, event):
-        self.selector.tile_selected(self.tile_index)
+        if event.button() == Qt.RightButton:
+            self.parent().parent().mousePressEvent(event)
+        elif event.button() == Qt.LeftButton:
+            self.selector.tile_selected(self.tile_index)
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() & Qt.RightButton:
+            self.parent().parent().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.RightButton:
+            self.parent().parent().mouseReleaseEvent(event)
 
 
 '''Create a list of TileLabels, each holding a slce of the tileset'''
@@ -25,17 +36,11 @@ class TileSelector(QWidget):
         self.tiles = []
 
         layout = QVBoxLayout(self) # vertical box like Vstack
-
-        self.scroll_area = QScrollArea() #scrollable area
         self.container = QWidget() # container for the grid
         self.grid = QGridLayout(self.container) # creates a grid manager for the container
         self.grid.setSpacing(1)
 
-        self.scroll_area.setWidgetResizable(True) # for resizing the scroll area
-        self.scroll_area.setWidget(self.container) # the container is added to the scroll area
-        self.scroll_area.setFixedHeight(900)
-        self.scroll_area.setFixedWidth(700)
-        layout.addWidget(self.scroll_area) # the scroll area is added to the main layout
+        layout.addWidget(self.container) # the scroll area is added to the main layout
 
         self.load_tileset_dialog()
 

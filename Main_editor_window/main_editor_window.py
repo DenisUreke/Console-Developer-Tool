@@ -26,13 +26,18 @@ class MainEditorWindow(QWidget):
             tile_data_view=self.tile_data_window.tile_data_view,  # ✅ pass reference to internal view
             model=self.main_data_model
         )
-
         self.canvas_scroll_area = DragScrollArea()
         self.canvas_scroll_area.setWidgetResizable(True)
         self.canvas_scroll_area.setWidget(self.canvas)
         self.canvas_scroll_area.setFixedHeight(900)
         self.canvas_scroll_area.setFixedWidth(900)
 
+        self.tile_selector_scroll = DragScrollArea()
+        self.tile_selector_scroll.setWidgetResizable(True)
+        self.tile_selector_scroll.setWidget(self.tile_selector)
+        self.tile_selector_scroll.setFixedHeight(900)
+        self.tile_selector_scroll.setFixedWidth(700)
+
         layout = QHBoxLayout(self)
-        layout.addWidget(self.tile_selector)
+        layout.addWidget(self.tile_selector_scroll, stretch=1)
         layout.addWidget(self.canvas_scroll_area, stretch=1)
