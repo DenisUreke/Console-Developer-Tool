@@ -6,11 +6,15 @@ class mainDataModel:
         self.setup_data_model = setup_data_model
         
         self.tile_dictionary: dict[tuple[int, int], TileData] = {}
+        self.grid = [[None for _ in range(self.setup_data_model.grid_width)] 
+                     for _ in range(self.setup_data_model.grid_height)] # Create matrix of None values
         
         for y in range(self.setup_data_model.grid_height):
             for x in range(self.setup_data_model.grid_width):
                 new_tile = TileData(0, '')
                 self.tile_dictionary[(x, y)] = new_tile
+                
+       
                 
         
                 

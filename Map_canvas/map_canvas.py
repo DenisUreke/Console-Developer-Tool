@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QScrollArea, QVBoxLayout
 from Models.main_data_model import mainDataModel
+from Draw_Box.lower_tile_layer_view import LowerTileLayerView
 from PySide6.QtGui import QPainter, QPixmap, QMouseEvent
 from PySide6.QtCore import Qt, QRect
 from typing import TYPE_CHECKING
@@ -10,26 +11,17 @@ class MapCanvas(QWidget):
         self.tile_selector = tile_selector
         self.model = model
         self.tile_data_view = tile_data_view
+        self.tile_layer = LowerTileLayerView(self.tile_selector, self.model, parent=self)
+        
+        self.tile_layer.move(0, 0)
+        self.tile_layer.raise_()
+        tile_width = self.model.setup_data_model.grid_width * self.model.setup_data_model.tile_size_x
+        tile_height = self.model.setup_data_model.grid_height * self.model.setup_data_model.tile_size_y
+
+        self.tile_layer.setFixedSize(tile_width, tile_height)
         
         # Grid to hold tile indices (or None)
-        self.grid = [[None for _ in range(self.model.setup_data_model.grid_width)] for _ in range(self.model.setup_data_model.grid_height)] # Create matrix of None values
         self.setFixedSize(self.model.setup_data_model.grid_width * self.model.setup_data_model.tile_size_x, self.model.setup_data_model.grid_height * self.model.setup_data_model.tile_size_y)
-
-    def paintEvent(self, event):
-        painter = QPainter(self)
-
-        # Draw the grid and placed tiles
-        for y in range(self.model.setup_data_model.grid_height):
-            for x in range(self.model.setup_data_model.grid_width):
-                tile_index = self.grid[y][x]
-                if tile_index is not None:
-                    tile_pixmap = self.tile_selector.tiles[tile_index].pixmap()
-                    # Draw the tile at the grid position top left corner is x,y
-                    painter.drawPixmap(x * self.model.setup_data_model.tile_size_x, y * self.model.setup_data_model.tile_size_y, tile_pixmap) 
-
-                # Draw grid lines
-                painter.setPen(Qt.gray)
-                painter.drawRect(x * self.model.setup_data_model.tile_size_x, y * self.model.setup_data_model.tile_size_y, self.model.setup_data_model.tile_size_x, self.model.setup_data_model.tile_size_y)
 
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MiddleButton:
@@ -64,11 +56,11 @@ class MapCanvas(QWidget):
             if 0 <= x < self.model.setup_data_model.grid_width and 0 <= y < self.model.setup_data_model.grid_height:
                 index = self.tile_selector.selected_index
                 if index is not None:
-                    self.grid[y][x] = index
+                    self.model.grid[y][x] = index
                     tile_data = self.model.tile_dictionary.get((x, y))
                     if tile_data:
                         tile_data.index = index
-                    self.update()
+                    self.tile_layer.update()
 
                 tile_data = self.model.tile_dictionary.get((x, y))
                 if tile_data:
