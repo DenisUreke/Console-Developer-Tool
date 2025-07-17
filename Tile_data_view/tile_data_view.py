@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QFormLayout, QLabel, QCheckBox
 from Models.tile_data_model import TileData
+from PySide6.QtGui import QFont
 
 class TileDataView(QWidget):
     def __init__(self):
@@ -69,23 +70,30 @@ class TileDataView(QWidget):
         self.note = QLabel() 
         
         # Add fields to layout
+        self.layout.addRow(self.create_section_header("General:"), QLabel())
         self.layout.addRow("Index:", self.index_label)
         self.layout.addRow("Tileset:", self.tileset_label)
         self.layout.addRow("Layer:", self.layer_label)
-        self.layout.addRow("Walkable:", self.walkable_cb)
         
         # --- Movement & Physics ---
+        self.layout.addRow(self.create_section_header("Movement & Physics:"), QLabel())
+        self.layout.addRow("Walkable:", self.walkable_cb)
         self.layout.addRow("Speed Factor:", self.speed_factor)
         self.layout.addRow("Friction:", self.friction)
         self.layout.addRow("Bouncy:", self.bouncy_cb)
+        
+        for side, cb in self.collision_cbs.items():
+            self.layout.addRow(f"Collision {side}:", cb)
 
         # --- Hazards / Environment Effects ---
+        self.layout.addRow(self.create_section_header("Environment Effects:"), QLabel())
         self.layout.addRow("Damage:", self.damage)
         self.layout.addRow("Kills Player:", self.kills_player_cb)
         self.layout.addRow("Effect:", self.effect)
         self.layout.addRow("Healing:", self.healing)
 
         # --- Logic & Triggers ---
+        self.layout.addRow(self.create_section_header("Logic & Triggers:"), QLabel())
         self.layout.addRow("Trigger:", self.trigger)
         self.layout.addRow("Target Map:", self.target_map)
         self.layout.addRow("Target Coords:", self.target_coords)
@@ -93,6 +101,7 @@ class TileDataView(QWidget):
         self.layout.addRow("Script:", self.script)
 
         # --- Spawning / Game Entities ---
+        self.layout.addRow(self.create_section_header("Spawning & Game Entities:"), QLabel())
         self.layout.addRow("Spawn:", self.spawn)
         self.layout.addRow("NPC ID:", self.npc_id)
         self.layout.addRow("Item:", self.item)
@@ -100,26 +109,26 @@ class TileDataView(QWidget):
         self.layout.addRow("Portal:", self.portal_cb)
 
         # --- Structural / Type Info ---
+        self.layout.addRow(self.create_section_header("Structural & Type Info:"), QLabel())
         self.layout.addRow("Type:", self.type)
         self.layout.addRow("Slope:", self.slope)
         self.layout.addRow("Z-Index:", self.z_index)
         self.layout.addRow("Variant:", self.variant)
 
         # --- Visual Controls ---
+        self.layout.addRow(self.create_section_header("Visual Controls:"), QLabel())
         self.layout.addRow("Tint:", self.tint)
         self.layout.addRow("Alpha:", self.alpha)
         self.layout.addRow("Animated:", self.animated_cb)
         self.layout.addRow("Animation ID:", self.animation_id)
 
         # --- Metadata ---
+        self.layout.addRow(self.create_section_header("Metadata:"), QLabel())
         self.layout.addRow("Region:", self.region)
         self.layout.addRow("Tag:", self.tag)
         self.layout.addRow("Custom ID:", self.custom_id)
         self.layout.addRow("Biome:", self.biome)
         self.layout.addRow("Note:", self.note)
-
-        for side, cb in self.collision_cbs.items():
-            self.layout.addRow(f"Collision {side}:", cb)
 
     def load_tile_data(self, tile_data: TileData):
         """Populate the view with new tile data"""
@@ -175,4 +184,12 @@ class TileDataView(QWidget):
         # Collision
         for side in self.collision_cbs:
             self.collision_cbs[side].setChecked(tile_data.collision[side])
+            
+    def create_section_header(self, text: str) -> QLabel:
+        label = QLabel(text)
+        font = QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        label.setFont(font)
+        return label
 

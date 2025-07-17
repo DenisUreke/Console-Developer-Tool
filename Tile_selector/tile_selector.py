@@ -1,30 +1,42 @@
 from PySide6.QtWidgets import QWidget, QLabel, QGridLayout, QFileDialog, QScrollArea, QVBoxLayout
 from Models.setup_model import SetupModel
-from PySide6.QtGui import QPixmap, QPainter, QPen
+from PySide6.QtGui import QPainter, QPen, QColor, QPixmap
 from PySide6.QtCore import Qt, QRect
 
 
 class TileLabel(QLabel):
     def __init__(self, pixmap, tile_index, selector, parent=None):
         super().__init__(parent)
-        self.selector = selector  # Store reference to TileSelector
+        self.selector = selector
         self.tile_index = tile_index
+        self.selected = False
         self.setPixmap(pixmap)
         self.setFixedSize(pixmap.width(), pixmap.height())
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MiddleButton:
             self.parent().parent().mousePressEvent(event)
         elif event.button() == Qt.LeftButton:
             self.selector.tile_selected(self.tile_index)
 
     def mouseMoveEvent(self, event):
-        if event.buttons() & Qt.RightButton:
+        if event.buttons() & Qt.MiddleButton:
             self.parent().parent().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event):
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MiddleButton:
             self.parent().parent().mouseReleaseEvent(event)
+
+
+    def paintEvent(self, event):
+        super().paintEvent(event)
+
+        if self.selected:
+            painter = QPainter(self)
+            pen = QPen(QColor("red"), 3)
+            painter.setPen(pen)
+            painter.drawRect(0, 0, self.width()-1, self.height()-1)
+
 
 
 '''Create a list of TileLabels, each holding a slce of the tileset'''
@@ -70,5 +82,13 @@ class TileSelector(QWidget):
 
     def tile_selected(self, index):
         print(f"Selected tile: {index}")
+
+        # Unhighlight previously selected tile
+        if self.selected_index is not None:
+            self.tiles[self.selected_index].selected = False
+            self.tiles[self.selected_index].update()
+
+        # Highlight new tile
         self.selected_index = index
-        # You can emit a signal here or call a callback
+        self.tiles[index].selected = True
+        self.tiles[index].update()

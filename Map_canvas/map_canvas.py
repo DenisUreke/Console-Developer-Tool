@@ -32,9 +32,30 @@ class MapCanvas(QWidget):
                 painter.drawRect(x * self.model.setup_data_model.tile_size_x, y * self.model.setup_data_model.tile_size_y, self.model.setup_data_model.tile_size_x, self.model.setup_data_model.tile_size_y)
 
     def mousePressEvent(self, event: QMouseEvent):
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MiddleButton:
             self.parent().mousePressEvent(event)
-            return  # Prevent placing tiles on right-click
+            return
+        
+        if event.button() == Qt.RightButton:
+            x = int(event.position().x() // self.model.setup_data_model.tile_size_x)
+            y = int(event.position().y() // self.model.setup_data_model.tile_size_y)
+
+            if 0 <= x < self.model.setup_data_model.grid_width and 0 <= y < self.model.setup_data_model.grid_height:
+                tile_data = self.model.tile_dictionary.get((x, y))
+                if tile_data:
+                    # ✅ Show data in the TileDataView
+                    self.tile_data_view.load_tile_data(tile_data)
+
+                    # ✅ Also highlight it in the TileSelector
+                    if tile_data.index is not None and 0 <= tile_data.index < len(self.tile_selector.tiles):
+                        # Unhighlight previous
+                        if self.tile_selector.selected_index is not None:
+                            self.tile_selector.tiles[self.tile_selector.selected_index].selected = False
+                            self.tile_selector.tiles[self.tile_selector.selected_index].update()
+
+                        self.tile_selector.selected_index = tile_data.index
+                        self.tile_selector.tiles[tile_data.index].selected = True
+                        self.tile_selector.tiles[tile_data.index].update()
 
         if event.button() == Qt.LeftButton:
             x = int(event.position().x() // self.model.setup_data_model.tile_size_x)
@@ -44,11 +65,15 @@ class MapCanvas(QWidget):
                 index = self.tile_selector.selected_index
                 if index is not None:
                     self.grid[y][x] = index
+                    tile_data = self.model.tile_dictionary.get((x, y))
+                    if tile_data:
+                        tile_data.index = index
                     self.update()
 
                 tile_data = self.model.tile_dictionary.get((x, y))
                 if tile_data:
                     self.tile_data_view.load_tile_data(tile_data)
+
 
     def mouseMoveEvent(self, event: QMouseEvent):
         if event.buttons() & Qt.RightButton:

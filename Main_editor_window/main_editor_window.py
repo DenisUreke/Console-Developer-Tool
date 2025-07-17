@@ -30,13 +30,13 @@ class MainEditorWindow(QWidget):
         self.canvas_scroll_area.setWidgetResizable(True)
         self.canvas_scroll_area.setWidget(self.canvas)
         self.canvas_scroll_area.setFixedHeight(900)
-        self.canvas_scroll_area.setFixedWidth(900)
+        self.canvas_scroll_area.setFixedWidth(965)
 
         self.tile_selector_scroll = DragScrollArea()
         self.tile_selector_scroll.setWidgetResizable(True)
         self.tile_selector_scroll.setWidget(self.tile_selector)
         self.tile_selector_scroll.setFixedHeight(900)
-        self.tile_selector_scroll.setFixedWidth(700)
+        self.tile_selector_scroll.setFixedWidth(635)
 
         layout = QHBoxLayout(self)
         layout.addWidget(self.tile_selector_scroll, stretch=1)
