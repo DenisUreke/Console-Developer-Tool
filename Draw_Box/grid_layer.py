@@ -4,9 +4,8 @@ from PySide6.QtCore import Qt, QRect
 from Models.main_data_model import MainDataModel
 
 class GridLayer(QWidget):
-    def __init__(self, tile_selector, model: MainDataModel, parent=None):
+    def __init__(self, model: MainDataModel, parent=None):
         super().__init__(parent)
-        self.tile_selector = tile_selector
         self.model = model
         self.grid = model.grid
         

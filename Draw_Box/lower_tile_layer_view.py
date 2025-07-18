@@ -31,12 +31,4 @@ class LowerTileLayerView(QWidget):
                         tile_pixmap
                     )
 
-                painter.setPen(Qt.gray)
-                painter.drawRect(
-                    x * self.model.setup_data_model.tile_size_x,
-                    y * self.model.setup_data_model.tile_size_y,
-                    self.model.setup_data_model.tile_size_x,
-                    self.model.setup_data_model.tile_size_y
-                )
-
 

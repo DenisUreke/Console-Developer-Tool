@@ -3,6 +3,7 @@ from Models.main_data_model import MainDataModel
 from Draw_Box.lower_tile_layer_view import LowerTileLayerView
 from Draw_Box.middle_tile_layer_view import MiddleTileLayerView
 from Draw_Box.upper_tile_layer_view import UpperTileLayerView
+from Draw_Box.grid_layer import GridLayer
 from PySide6.QtGui import QPainter, QPixmap, QMouseEvent
 from PySide6.QtCore import Qt, QRect
 from typing import TYPE_CHECKING
@@ -16,6 +17,7 @@ class MapCanvas(QWidget):
         self.lower_tile_layer = LowerTileLayerView(self.tile_selector, self.model, parent=self)
         self.middle_tile_layer = MiddleTileLayerView(self.tile_selector, self.model, parent=self)
         self.upper_tile_layer = UpperTileLayerView(self.tile_selector, self.model, parent=self)
+        self.grid_layer = GridLayer(self.model, parent=self)
         
         
         self.lower_tile_layer.move(0, 0)
@@ -36,7 +38,8 @@ class MapCanvas(QWidget):
         self.layer_views = {
             "lower": self.lower_tile_layer,
             "middle": self.middle_tile_layer,
-            "upper": self.upper_tile_layer
+            "upper": self.upper_tile_layer,
+            "grid": self.grid_layer
         }
         
         # Grid to hold tile indices (or None)

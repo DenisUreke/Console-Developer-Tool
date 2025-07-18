@@ -10,11 +10,13 @@ class MainDataModel:
         self.show_lower_layer = True
         self.show_middle_layer = True
         self.show_upper_layer = True
+        self.show_grid_layer = True
         
         self.visible_layers = {
             "lower_layer": self.show_lower_layer,
             "middle_layer": self.show_middle_layer,
-            "upper_layer": self.show_upper_layer
+            "upper_layer": self.show_upper_layer,
+            "grid_layer": self.show_grid_layer
         }
         
         self.undo_list: deque[TileData] = deque()
@@ -48,6 +50,9 @@ class MainDataModel:
                 self.show_middle_layer = new_value
             elif layer == "upper_layer":
                 self.show_upper_layer = new_value
+            elif layer == "grid_layer":
+                self.show_upper_layer = new_value
+
 
 
         
