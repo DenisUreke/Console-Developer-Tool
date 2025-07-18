@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QWidget, QScrollArea, QVBoxLayout
-from Models.main_data_model import mainDataModel
+from Models.main_data_model import MainDataModel
 from Draw_Box.lower_tile_layer_view import LowerTileLayerView
 from Draw_Box.middle_tile_layer_view import MiddleTileLayerView
 from Draw_Box.upper_tile_layer_view import UpperTileLayerView
@@ -8,7 +8,7 @@ from PySide6.QtCore import Qt, QRect
 from typing import TYPE_CHECKING
 
 class MapCanvas(QWidget):
-    def __init__(self, tile_selector, tile_data_view, model: mainDataModel = None):
+    def __init__(self, tile_selector, tile_data_view, model: MainDataModel = None):
         super().__init__()
         self.tile_selector = tile_selector
         self.model = model
@@ -91,4 +91,11 @@ class MapCanvas(QWidget):
     def mouseReleaseEvent(self, event: QMouseEvent):
         if event.button() == Qt.RightButton:
             self.parent().mouseReleaseEvent(event)
+            
+    def update_layer_visibility(self):
+        for layer_key, visible in self.model.visible_layers.items():
+            # layer_key is like "lower_layer", convert to "lower"
+            layer_name = layer_key.replace("_layer", "")
+            if layer_name in self.layer_views:
+                self.layer_views[layer_name].setVisible(visible)
 

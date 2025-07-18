@@ -5,7 +5,7 @@ class TileData:
         self,
         index: int,
         tileset: str,
-        layer: str = "ground"
+        layer: str = ""
     ):
         # --- Core Visual Info ---
         self.index: int = index

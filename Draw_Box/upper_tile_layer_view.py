@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import QWidget
 from PySide6.QtGui import QPainter, QPixmap, QMouseEvent
 from PySide6.QtCore import Qt, QRect
-from Models.main_data_model import mainDataModel
+from Models.main_data_model import MainDataModel
 
 class UpperTileLayerView(QWidget):
-    def __init__(self, tile_selector, model: mainDataModel, parent=None):
+    def __init__(self, tile_selector, model: MainDataModel, parent=None):
         super().__init__(parent)
         self.tile_selector = tile_selector
         self.model = model
