@@ -20,7 +20,9 @@ class UpperTileLayerView(QWidget):
 
         for y in range(self.model.setup_data_model.grid_height):
             for x in range(self.model.setup_data_model.grid_width):
-                tile_index = self.grid[y][x]
+                tile_data = self.model.tile_dictionary.get((x, y), {}).get('upper')
+                tile_index = tile_data.index if tile_data else None
+
                 if tile_index is not None:
                     tile_pixmap = self.tile_selector.tiles[tile_index].pixmap()
                     painter.drawPixmap(
