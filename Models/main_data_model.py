@@ -7,6 +7,7 @@ class MainDataModel:
         self.setup_data_model = setup_data_model
         self.active_layer = "lower"
         
+        # -- visible layers --
         self.show_lower_layer = True
         self.show_middle_layer = True
         self.show_upper_layer = True
@@ -19,10 +20,11 @@ class MainDataModel:
             "grid_layer": self.show_grid_layer
         }
         
-        self.undo_list: deque[TileData] = deque()
-        '''to create undo functions later'''
+        # -- undo values --
+        self.undo_list: deque[TileData] = deque(maxlen=10) 
+        self.undo_list_index = len(self.undo_list) -1 # index for undo
 
-
+        # -- tile data --
         self.tile_dictionary: dict[tuple[int, int], dict[str, TileData]] = {}
 
         self.grid = [[None for _ in range(self.setup_data_model.grid_width)] 
@@ -52,7 +54,15 @@ class MainDataModel:
                 self.show_upper_layer = new_value
             elif layer == "grid_layer":
                 self.show_upper_layer = new_value
-
+    
+    def add_to_deque_list(self, tile: TileData):
+        self.undo_list.appendleft(tile)
+        
+    def undo_actions(self):
+        if self.undo_list_index > -1:
+            old_data = self.undo_list[self.undo_list_index]
+            pass
+        
 
 
         
