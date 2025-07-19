@@ -2,12 +2,13 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout, QPushButton, QButtonGroup, Q
 from Models.main_data_model import MainDataModel
 
 class LayerVisibilityButtons(QWidget):
-    def __init__(self, model: MainDataModel):
+    def __init__(self, model: MainDataModel, canvas):
         super().__init__()
         
         self.model = model
         layout = QVBoxLayout(self)
         layout.setSpacing(0)
+        self.canvas = canvas
         
         title_label = QLabel("Show Layer")
         layout.addWidget(title_label)
@@ -33,5 +34,5 @@ class LayerVisibilityButtons(QWidget):
         
     def toggle_layer_visibility(self, layer: str):
         self.model.toggle_visible_layers(layer)
-        self.parent().canvas.update_layer_visibility()
+        self.canvas.update_layer_visibility()
         

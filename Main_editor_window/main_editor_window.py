@@ -16,19 +16,18 @@ class MainEditorWindow(QWidget):
 
         self.setup_model = SetupModel()
         self.main_data_model = MainDataModel(self.setup_model)
-
         self.tile_selector = TileSelector(model=self.setup_model)
-        self.draw_layer_buttons = LayerToggleButtons(model=self.main_data_model)
-        self.show_layer_buttons = LayerVisibilityButtons(model = self.main_data_model)
-
         self.tile_data_window = TileDataWindow()
         self.tile_data_window.show()
-
+        
         self.canvas = MapCanvas(
             tile_selector=self.tile_selector,
             tile_data_view=self.tile_data_window.tile_data_view,
             model=self.main_data_model
         )
+        self.draw_layer_buttons = LayerToggleButtons(model=self.main_data_model)
+        self.show_layer_buttons = LayerVisibilityButtons(model = self.main_data_model, canvas= self.canvas)
+
         
         # -- Canvas --
         self.canvas_scroll_area = DragScrollArea()
