@@ -14,6 +14,8 @@ class TileDataView(QWidget):
         self.layer_label = QLabel()
         self.walkable_cb = QCheckBox()
         self.walkable_cb.setEnabled(False)
+        self.canvas_index_x = QLabel()
+        self.canvas_index_y = QLabel()
 
         # Collision checkboxes
         self.collision_cbs = {
@@ -74,6 +76,8 @@ class TileDataView(QWidget):
         self.layout.addRow("Index:", self.index_label)
         self.layout.addRow("Tileset:", self.tileset_label)
         self.layout.addRow("Layer:", self.layer_label)
+        self.layout.addRow("x:", self.canvas_index_x)
+        self.layout.addRow("y:", self.canvas_index_y)
         
         # --- Movement & Physics ---
         self.layout.addRow(self.create_section_header("Movement & Physics:"), QLabel())
@@ -135,8 +139,9 @@ class TileDataView(QWidget):
         self.index_label.setText(str(tile_data.index))
         self.tileset_label.setText(tile_data.tileset)
         self.layer_label.setText(tile_data.layer)
-        self.walkable_cb.setChecked(tile_data.walkable)
-
+        self.canvas_index_x.setText(str(getattr(tile_data, "grid_x", "")))
+        self.canvas_index_y.setText(str(getattr(tile_data, "grid_y", "")))
+        
         # Movement & Physics
         self.speed_factor.setText(str(tile_data.speed_factor))
         self.friction.setText(str(tile_data.friction))

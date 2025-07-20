@@ -7,6 +7,7 @@ from Map_canvas.map_canvas import MapCanvas
 from Tile_Data_Window.tile_data_window import TileDataWindow
 from Top_button_menu.layer_toggle_buttons import LayerToggleButtons
 from Top_button_menu.layer_visibility_buttons import LayerVisibilityButtons
+from Top_button_menu.undo_redo_buttons import UndoRedoButtons
 from Drag_and_scroll_area.drag_and_scroll_area import DragScrollArea
 
 class MainEditorWindow(QWidget):
@@ -25,8 +26,10 @@ class MainEditorWindow(QWidget):
             tile_data_view=self.tile_data_window.tile_data_view,
             model=self.main_data_model
         )
+        self.main_data_model.canvas = self.canvas
         self.draw_layer_buttons = LayerToggleButtons(model=self.main_data_model)
         self.show_layer_buttons = LayerVisibilityButtons(model = self.main_data_model, canvas= self.canvas)
+        self.undo_redo_buttons = UndoRedoButtons(model=self.main_data_model)
 
         
         # -- Canvas --
@@ -51,6 +54,12 @@ class MainEditorWindow(QWidget):
         content_widget = QWidget()
         content_widget.setLayout(layout)
         
+        # -- Undo/Redo ---
+        undo_redo_buttons = QVBoxLayout()
+        undo_redo_buttons.addWidget(self.undo_redo_buttons)
+        undo_redo_widget = QWidget()
+        undo_redo_widget.setLayout(undo_redo_buttons)
+        
         # -- Upper menu buttons --
         first_column_buttons = QVBoxLayout()
         first_column_buttons.addWidget(self.draw_layer_buttons)
@@ -65,6 +74,7 @@ class MainEditorWindow(QWidget):
         upper_bar_layout = QHBoxLayout()
         upper_bar_layout.addWidget(first_column_widget)
         upper_bar_layout.addWidget(second_column_widget)
+        upper_bar_layout.addWidget(undo_redo_widget)
         upper_bar_widget = QWidget()
         upper_bar_widget.setLayout(upper_bar_layout)
         

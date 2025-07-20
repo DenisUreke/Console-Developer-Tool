@@ -16,6 +16,7 @@ class LayerToggleButtons(QWidget):
         self.btn_lower = QPushButton("Lower Layer")
         self.btn_middle = QPushButton("Middle Layer")
         self.btn_upper = QPushButton("Upper Layer")
+        
 
         for btn in [self.btn_lower, self.btn_middle, self.btn_upper]:
             btn.setCheckable(True)

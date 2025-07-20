@@ -3,6 +3,8 @@ from typing import Optional, Dict, Any
 class TileData:
     def __init__(
         self,
+        grid_x: int,
+        grid_y: int,
         index: int,
         tileset: str,
         layer: str = ""
@@ -11,6 +13,8 @@ class TileData:
         self.index: int = index
         self.tileset: str = tileset
         self.layer: str = layer
+        self.grid_x: int = grid_x
+        self.grid_y: int = grid_y
 
         # --- Movement & Physics ---
         self.walkable: bool = True

@@ -6,6 +6,7 @@ from Draw_Box.upper_tile_layer_view import UpperTileLayerView
 from Draw_Box.grid_layer import GridLayer
 from PySide6.QtGui import QPainter, QPixmap, QMouseEvent
 from PySide6.QtCore import Qt, QRect
+import copy
 from typing import TYPE_CHECKING
 
 class MapCanvas(QWidget):
@@ -75,16 +76,21 @@ class MapCanvas(QWidget):
             y = int(event.position().y() // self.model.setup_data_model.tile_size_y)
 
             if 0 <= x < self.model.setup_data_model.grid_width and 0 <= y < self.model.setup_data_model.grid_height:
+                # 1. Get the current tile
+                tile_data = self.model.tile_dictionary[(x, y)][self.model.active_layer]
+
+                # 2. Save a deepcopy of the current tile to the undo stack
+                self.model.add_to_deque_list(copy.deepcopy(tile_data))
+
+                # 3. Apply tile change if a tile is selected
                 index = self.tile_selector.selected_index
                 if index is not None:
-                    tile_data = self.model.tile_dictionary.get((x, y), {}).get(self.model.active_layer)
-                    if tile_data:
-                        tile_data.index = index
-                    self.layer_views[self.model.active_layer].update()
+                    tile_data.index = index
 
-                tile_data = self.model.tile_dictionary.get((x, y))
-                if tile_data:
-                    self.tile_data_view.load_tile_data(tile_data)
+                # 4. Update the canvas and tile detail panel
+                self.layer_views[self.model.active_layer].update()
+                self.tile_data_view.load_tile_data(tile_data)
+
 
 
     def mouseMoveEvent(self, event: QMouseEvent):
