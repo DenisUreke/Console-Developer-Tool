@@ -8,9 +8,13 @@ from PySide6.QtGui import QPainter, QPixmap, QMouseEvent
 from PySide6.QtCore import Qt, QRect
 import copy
 from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from Tile_selector.tile_selector import TileSelector
+    from Main_editor_window.main_editor_window import MainEditorWindow
+
 
 class MapCanvas(QWidget):
-    def __init__(self, tile_selector, tile_data_view, model: MainDataModel = None):
+    def __init__(self, tile_selector: 'TileSelector', tile_data_view, model: MainDataModel = None):
         super().__init__()
         self.tile_selector = tile_selector
         self.model = model
@@ -86,6 +90,8 @@ class MapCanvas(QWidget):
                 index = self.tile_selector.selected_index
                 if index is not None:
                     tile_data.index = index
+                    tile_data.tileset = self.tile_selector.selected_name
+
 
                 # 4. Update the canvas and tile detail panel
                 self.layer_views[self.model.active_layer].update()

@@ -2,7 +2,7 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QMenu
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt
-from Main_editor_window.main_editor_window import MainEditorWindow  # ✅ Ensure this import path is correct
+from Main_editor_window.main_editor_window import MainEditorWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -44,11 +44,17 @@ class MainWindow(QMainWindow):
         window_action.triggered.connect(self.show_tile_data_window)
         window_menu.addAction(window_action)
 
+       # --- Tile-Set ---
+        tile_set_menu = menu_bar.addMenu("Tile-Set")
+        tile_set = QAction("Load new tile-set", self)
+        tile_set.triggered.connect(self.load_tileset)
+        tile_set_menu.addAction(tile_set)
 
         # --- Help Menu ---
         help_menu = menu_bar.addMenu("Help")
         about_action = QAction("About", self)
         help_menu.addAction(about_action)
+        
 
         
     def load_tileset(self):

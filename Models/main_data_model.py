@@ -34,9 +34,9 @@ class MainDataModel:
         for y in range(self.setup_data_model.grid_height):
             for x in range(self.setup_data_model.grid_width):
                 self.tile_dictionary[(x, y)] = {
-                    'lower': TileData(x, y, 0, '', 'lower'),
-                    'middle': TileData(x, y, 0, '', 'middle'),
-                    'upper': TileData(x, y, 0, '', 'upper')
+                    'lower': TileData(x, y, None, '', 'lower'),
+                    'middle': TileData(x, y, None, '', 'middle'),
+                    'upper': TileData(x, y, None, '', 'upper')
                 }
                 
     def set_active_layer(self, layer: str):
@@ -57,45 +57,33 @@ class MainDataModel:
                 self.show_upper_layer = new_value
     
     def add_to_deque_list(self, tile: TileData):
-        # Remove future redos if user did a new action after undoing
         while self.undo_list_index > 0:
             self.undo_list.popleft()
             self.undo_list_index -= 1
 
         self.undo_list.appendleft(tile)
-        self.undo_list_index = 0  # reset to most recent item
-        #print(f"insert done index is = {self.undo_list_index}")
+        self.undo_list_index = 0
         print(f"deque length = {len(self.undo_list)}")
         
     def undo_actions(self):
-        print("----------------------")
         if self.undo_list_index + 1 <= len(self.undo_list):
             old_data = self.undo_list[self.undo_list_index]
             current_data = self.tile_dictionary[(old_data.grid_x, old_data.grid_y)][old_data.layer]
             self.tile_dictionary[(old_data.grid_x, old_data.grid_y)][old_data.layer] = old_data
             self.canvas.update()
             self.undo_list[self.undo_list_index] = current_data
-            
-            print(f"Undone at -> index = {self.undo_list_index}")
 
-            # Move to the next older action if available
             if self.undo_list_index < len(self.undo_list) - 1:
                 self.undo_list_index += 1
-            print(f"index is now = {self.undo_list_index}")
-            print("----------------------")
 
-        
     def redo_actions(self):
-        print("----------------------")
         if self.undo_list_index > 0:
-            self.undo_list_index -= 1  # Step forward in time
+            self.undo_list_index -= 1
             newer_data = self.undo_list[self.undo_list_index]
             current_data = self.tile_dictionary[(newer_data.grid_x, newer_data.grid_y)][newer_data.layer]
             self.tile_dictionary[(newer_data.grid_x, newer_data.grid_y)][newer_data.layer] = newer_data
             self.canvas.update()
             self.undo_list[self.undo_list_index] = current_data
-            print(f"Redo at -> index = {self.undo_list_index}")
-            print("----------------------")
 
 
         
