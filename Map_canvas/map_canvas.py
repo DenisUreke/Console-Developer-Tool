@@ -45,11 +45,11 @@ class MapCanvas(QWidget):
         
         # mapping for more layers
         self.layer_views = {
+            "background": self.background_image_layer,
             "lower": self.lower_tile_layer,
             "middle": self.middle_tile_layer,
             "upper": self.upper_tile_layer,
-            "grid": self.grid_layer,
-            "background": self.background_image_layer
+            "grid": self.grid_layer
         }
         
         # Grid to hold tile indices (or None)
