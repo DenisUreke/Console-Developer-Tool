@@ -21,12 +21,19 @@ class UpperTileLayerView(QWidget):
         for y in range(self.model.setup_data_model.grid_height):
             for x in range(self.model.setup_data_model.grid_width):
                 tile_data = self.model.tile_dictionary.get((x, y), {}).get('upper')
-                tile_index = tile_data.index if tile_data else None
 
-                if tile_index is not None:
-                    tile_pixmap = self.tile_selector.tiles[tile_index].pixmap()
-                    painter.drawPixmap(
-                        x * self.model.setup_data_model.tile_size_x,
-                        y * self.model.setup_data_model.tile_size_y,
-                        tile_pixmap
-                    )
+                if tile_data and tile_data.index is not None and tile_data.tileset:
+                    tileset_name = tile_data.tileset
+                    tile_index = tile_data.index
+
+                    tilesets = self.model.setup_data_model.tilesets
+                    if tileset_name in tilesets:
+                        tileset = tilesets[tileset_name]
+
+                        if 0 <= tile_index < len(tileset):
+                            tile_pixmap = tileset[tile_index]
+                            painter.drawPixmap(
+                                x * self.model.setup_data_model.tile_size_x,
+                                y * self.model.setup_data_model.tile_size_y,
+                                tile_pixmap
+                            )
