@@ -1,6 +1,9 @@
 from Models.tile_data_model import TileData
 from Models.setup_model import SetupModel
+from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QFileDialog
 from collections import deque
+import os
 
 class MainDataModel:
     def __init__(self, setup_data_model: SetupModel, canvas = None):
@@ -8,17 +11,23 @@ class MainDataModel:
         self.active_layer = "lower"
         self.canvas = canvas
         
+        # --- background image data ---
+        self.background_image_layer: str = ""
+        self.background_image_file_name: str = ""
+        
         # -- visible layers --
         self.show_lower_layer = True
         self.show_middle_layer = True
         self.show_upper_layer = True
         self.show_grid_layer = True
+        self.show_background_image_layer_view = True
         
         self.visible_layers = {
             "lower_layer": self.show_lower_layer,
             "middle_layer": self.show_middle_layer,
             "upper_layer": self.show_upper_layer,
-            "grid_layer": self.show_grid_layer
+            "grid_layer": self.show_grid_layer,
+            "background_image_layer_view": self.show_background_image_layer_view
         }
         
         # -- undo values --
@@ -54,7 +63,11 @@ class MainDataModel:
             elif layer == "upper_layer":
                 self.show_upper_layer = new_value
             elif layer == "grid_layer":
-                self.show_upper_layer = new_value
+                self.show_grid_layer = new_value
+            elif layer == "background_image_layer_view":
+                self.show_background_image_layer_view = new_value
+                if self.canvas:  # Only do this if canvas has been set
+                    self.canvas.background_image_layer.setVisible(new_value)
     
     def add_to_deque_list(self, tile: TileData):
         while self.undo_list_index > 0:
@@ -84,6 +97,16 @@ class MainDataModel:
             self.tile_dictionary[(newer_data.grid_x, newer_data.grid_y)][newer_data.layer] = newer_data
             self.canvas.update()
             self.undo_list[self.undo_list_index] = current_data
+            
+    def load_background_image(self, parent=None):
+        file_path, _ = QFileDialog.getOpenFileName(parent, "Load Background Image", "", "Images (*.png *.jpg)")
+        if file_path:
+            self.background_image_file_name = os.path.basename(file_path) 
+            self.set_background_image(file_path)
+            self.canvas.background_image_layer.update()
+            
+    def set_background_image(self, path: str):
+        self.background_image_layer = QPixmap(path)
 
 
         

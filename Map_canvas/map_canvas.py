@@ -4,6 +4,7 @@ from Draw_Box.lower_tile_layer_view import LowerTileLayerView
 from Draw_Box.middle_tile_layer_view import MiddleTileLayerView
 from Draw_Box.upper_tile_layer_view import UpperTileLayerView
 from Draw_Box.grid_layer import GridLayer
+from Draw_Box.background_image_layer_view import BackgroundImageLayerView
 from PySide6.QtGui import QPainter, QPixmap, QMouseEvent
 from PySide6.QtCore import Qt, QRect
 import copy
@@ -22,9 +23,12 @@ class MapCanvas(QWidget):
         self.lower_tile_layer = LowerTileLayerView(self.tile_selector, self.model, parent=self)
         self.middle_tile_layer = MiddleTileLayerView(self.tile_selector, self.model, parent=self)
         self.upper_tile_layer = UpperTileLayerView(self.tile_selector, self.model, parent=self)
+        self.background_image_layer = BackgroundImageLayerView(model=self.model, parent=self)
         self.grid_layer = GridLayer(self.model, parent=self)
         
         
+        self.background_image_layer.move(0,0)
+        self.background_image_layer.lower()
         self.lower_tile_layer.move(0, 0)
         self.lower_tile_layer.raise_()
         self.middle_tile_layer.move(0, 0)
@@ -44,7 +48,8 @@ class MapCanvas(QWidget):
             "lower": self.lower_tile_layer,
             "middle": self.middle_tile_layer,
             "upper": self.upper_tile_layer,
-            "grid": self.grid_layer
+            "grid": self.grid_layer,
+            "background": self.background_image_layer
         }
         
         # Grid to hold tile indices (or None)

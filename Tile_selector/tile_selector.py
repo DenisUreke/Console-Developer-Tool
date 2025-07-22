@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QLabel, QGridLayout, QFileDialog, QScrollArea, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy
+from PySide6.QtWidgets import QWidget, QLabel, QGridLayout, QFileDialog, QScrollArea, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy, QSpacerItem
 from Models.setup_model import SetupModel
 from PySide6.QtGui import QPainter, QPen, QColor, QPixmap
 from PySide6.QtCore import Qt, QRect
@@ -123,7 +123,6 @@ class TileSelector(QWidget):
         self.tiles[index].update()
         
     def refresh_tileset_buttons(self):
-        # Clear current buttons
         while self.toggle_button_bar.count():
             item = self.toggle_button_bar.takeAt(0)
             widget = item.widget()
@@ -131,12 +130,25 @@ class TileSelector(QWidget):
                 widget.setParent(None)
 
         tile_index = 1
-        # Add one button per loaded tileset
         for name in self.model.tilesets.keys():
             button = QPushButton(f"{tile_index}")
+            button.setCheckable(True)
             button.setMaximumWidth(30)
             button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-            tile_index += 1
-            button.clicked.connect(lambda _, n=name: self.display_active_tileset(n))
+            button.clicked.connect(lambda _, n=name: self.set_active_tileset(n))
             self.toggle_button_bar.addWidget(button, alignment=Qt.AlignLeft)
             self.toggle_buttons[name] = button
+            tile_index += 1
+            
+        spacer = QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.toggle_button_bar.addItem(spacer)
+
+            
+    def set_active_tileset(self, name):
+        # Display tileset
+        self.display_active_tileset(name)
+
+        # Update button checked state
+        for n, btn in self.toggle_buttons.items():
+            btn.setChecked(n == name)
+

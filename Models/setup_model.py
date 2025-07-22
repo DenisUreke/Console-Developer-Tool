@@ -13,7 +13,7 @@ class SetupModel:
         # Holds sliced tile images per tileset name
         self.tilesets: dict[str, list[QPixmap]] = {}
 
-        # (Optional) Holds full raw QPixmaps for preview or export
+        # Holds full raw QPixmaps for preview or export, maybe for later use?
         self.tileset_images: dict[str, QPixmap] = {}
 
         # Tracks the currently active tileset (for selector view)

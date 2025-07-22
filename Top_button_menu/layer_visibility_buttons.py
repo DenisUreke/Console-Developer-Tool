@@ -17,8 +17,9 @@ class LayerVisibilityButtons(QWidget):
         self.btn_middle = QPushButton("Middle Layer")
         self.btn_upper = QPushButton("Upper Layer")
         self.btn_grid = QPushButton("Grid Layer")
+        self.btn_background = QPushButton("Background Image")
         
-        for btn in [self.btn_lower, self.btn_middle, self.btn_upper, self.btn_grid]:
+        for btn in [self.btn_background, self.btn_lower, self.btn_middle, self.btn_upper, self.btn_grid]:
             btn.setCheckable(True)
             layout.addWidget(btn)
         
@@ -26,11 +27,13 @@ class LayerVisibilityButtons(QWidget):
         self.btn_middle.setChecked(True)
         self.btn_upper.setChecked(True)
         self.btn_grid.setChecked(True)
+        self.btn_background.setChecked(True)
         
         self.btn_lower.clicked.connect(lambda: self.toggle_layer_visibility("lower_layer"))
         self.btn_middle.clicked.connect(lambda: self.toggle_layer_visibility("middle_layer"))
         self.btn_upper.clicked.connect(lambda: self.toggle_layer_visibility("upper_layer"))
         self.btn_grid.clicked.connect(lambda: self.toggle_layer_visibility("grid_layer"))
+        self.btn_background.clicked.connect(lambda: self.toggle_layer_visibility("background_image_layer_view"))
         
     def toggle_layer_visibility(self, layer: str):
         self.model.toggle_visible_layers(layer)
