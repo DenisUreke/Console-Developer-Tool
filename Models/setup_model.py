@@ -6,8 +6,8 @@ class SetupModel:
     def __init__(self):
         self.tile_size_x: int = 32
         self.tile_size_y: int = 32
-        self.grid_width: int = 30
-        self.grid_height: int = 20
+        self.grid_width: int = 58
+        self.grid_height: int = 46
         self.loaded_maps_index: int = 0
         
         # Holds sliced tile images per tileset name

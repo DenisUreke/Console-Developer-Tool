@@ -12,9 +12,21 @@ class BackgroundImageLayerView(QWidget):
         self.setFixedHeight(900)
         self.setFixedWidth(965)
         
-    def paintEvent(self, event):
+    '''def paintEvent(self, event):
         painter = QPainter(self)
         if isinstance(self.model.background_image_layer, QPixmap):
-            painter.drawPixmap(0, 0, self.model.background_image_layer)
+            painter.drawPixmap(0, 0, self.model.background_image_layer)'''
+            
+    def paintEvent(self, event):
+        painter = QPainter(self)
+
+        if isinstance(self.model.background_image_layer, QPixmap):
+            stretched_pixmap = self.model.background_image_layer.scaled(
+                self.width(),
+                self.height(),
+                Qt.KeepAspectRatio,
+                Qt.SmoothTransformation
+            )
+            painter.drawPixmap(0, 0, stretched_pixmap)
         
         
