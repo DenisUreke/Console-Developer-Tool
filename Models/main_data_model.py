@@ -15,19 +15,24 @@ class MainDataModel:
         self.background_image_layer: str = ""
         self.background_image_file_name: str = ""
         
+        self.background_image_layer_2: str = ""
+        self.background_image_file_name_2: str = ""
+        
         # -- visible layers --
         self.show_lower_layer = True
         self.show_middle_layer = True
         self.show_upper_layer = True
         self.show_grid_layer = True
         self.show_background_image_layer_view = True
+        self.show_background_image_layer_view_2 = True
         
         self.visible_layers = {
             "lower_layer": self.show_lower_layer,
             "middle_layer": self.show_middle_layer,
             "upper_layer": self.show_upper_layer,
             "grid_layer": self.show_grid_layer,
-            "background_image_layer_view": self.show_background_image_layer_view
+            "background_image_layer_view": self.show_background_image_layer_view,
+            "background_image_layer_view_2": self.show_background_image_layer_view_2
         }
         
         # -- undo values --
@@ -68,6 +73,10 @@ class MainDataModel:
                 self.show_background_image_layer_view = new_value
                 if self.canvas:  # Only do this if canvas has been set
                     self.canvas.background_image_layer.setVisible(new_value)
+            elif layer == "background_image_layer_view_2":
+                self.show_background_image_layer_view = new_value
+                if self.canvas:  # Only do this if canvas has been set
+                    self.canvas.background_image_layer_2.setVisible(new_value)
     
     def add_to_deque_list(self, tile: TileData):
         while self.undo_list_index > 0:
@@ -105,8 +114,26 @@ class MainDataModel:
             self.set_background_image(file_path)
             self.canvas.background_image_layer.update()
             
+    def load_background_image_2(self, parent=None):
+        file_path, _ = QFileDialog.getOpenFileName(parent, "Load Background Image", "", "Images (*.png *.jpg)")
+        if file_path:
+            self.background_image_file_name_2 = os.path.basename(file_path) 
+            self.set_background_image_2(file_path)
+            self.canvas.background_image_layer_2.update()
+            
     def set_background_image(self, path: str):
         self.background_image_layer = QPixmap(path)
+        
+    def set_background_image_2(self, path: str):
+        self.background_image_layer_2 = QPixmap(path)
+        
+    def update_background_layer(self):
+        self.canvas.background_image_layer.update()
+        
+    def update_background_layer_2(self):
+        self.canvas.background_image_layer_2.update()
+    
+    
 
 
         

@@ -8,7 +8,7 @@ from Tile_Data_Window.tile_data_window import TileDataWindow
 from Top_button_menu.layer_toggle_buttons import LayerToggleButtons
 from Top_button_menu.layer_visibility_buttons import LayerVisibilityButtons
 from Top_button_menu.undo_redo_buttons import UndoRedoButtons
-from Top_button_menu.load_background_image_button import LoadBackgroundImageButton
+from Top_button_menu.load_background_image_button import BackgroundButtons
 from Drag_and_scroll_area.drag_and_scroll_area import DragScrollArea
 
 class MainEditorWindow(QWidget):
@@ -31,8 +31,7 @@ class MainEditorWindow(QWidget):
         self.draw_layer_buttons = LayerToggleButtons(model=self.main_data_model)
         self.show_layer_buttons = LayerVisibilityButtons(model = self.main_data_model, canvas= self.canvas)
         self.undo_redo_buttons = UndoRedoButtons(model=self.main_data_model)
-        self.load_background_image_button = LoadBackgroundImageButton(model= self.main_data_model)
-
+        self.background_buttons = BackgroundButtons(model=self.main_data_model)
         
         # -- Canvas --
         self.canvas_scroll_area = DragScrollArea()
@@ -61,13 +60,7 @@ class MainEditorWindow(QWidget):
         undo_redo_buttons.addWidget(self.undo_redo_buttons)
         undo_redo_widget = QWidget()
         undo_redo_widget.setLayout(undo_redo_buttons)
-        
-        # --- Load Background Image ---
-        load_background_layout = QVBoxLayout()
-        load_background_layout.addWidget(self.load_background_image_button)
-        load_background_widget = QWidget()
-        load_background_widget.setLayout(load_background_layout)
-        
+               
         # -- Upper menu buttons --
         first_column_buttons = QVBoxLayout()
         first_column_buttons.addWidget(self.draw_layer_buttons)
@@ -80,10 +73,10 @@ class MainEditorWindow(QWidget):
         second_column_widget.setLayout(second_column_buttons)
         
         upper_bar_layout = QHBoxLayout()
-        upper_bar_layout.addWidget(load_background_widget)
         upper_bar_layout.addWidget(first_column_widget)
         upper_bar_layout.addWidget(second_column_widget)
         upper_bar_layout.addWidget(undo_redo_widget)
+        upper_bar_layout.addWidget(self.background_buttons)
         upper_bar_widget = QWidget()
         upper_bar_widget.setLayout(upper_bar_layout)
     
