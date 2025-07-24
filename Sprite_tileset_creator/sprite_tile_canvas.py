@@ -16,17 +16,20 @@ class SpriteCanvas(QWidget):
         self.model = model
         
     def mousePressEvent(self, event: QMouseEvent):
+        
+        tile_x = event.x() // self.model.tile_size_x
+        tile_y = event.y() // self.model.tile_size_y
+        
         if event.button() == Qt.LeftButton:
-            tile_x = event.x() // self.model.tile_size_x
-            tile_y = event.y() // self.model.tile_size_y
 
             if (0 <= tile_x < self.model.grid_width) and (0 <= tile_y < self.model.grid_height):
                 if self.tile_selector.selected_name is not None:
                     tile_info = (self.tile_selector.selected_name, self.tile_selector.selected_index)
                     self.model.grid[tile_y][tile_x] = tile_info
                     self.update()
+                    
         elif event.button() == Qt.RightButton:
-            self.grid[tile_y][tile_x] = None
+            self.model.grid[tile_y][tile_x] = None
             self.update()
                 
     def paintEvent(self, event):

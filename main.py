@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QMenu
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt
 from Main_editor_window.main_editor_window import MainEditorWindow
+from Sprite_tileset_creator.sprite_tileset_window import SpriteTilesetWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -74,7 +75,12 @@ class MainWindow(QMainWindow):
         self.editor.tile_data_window.raise_()
     
     def create_sprite_tileset(self):
-        pass
+        # keep a reference so it doesn’t get garbage-collected
+        if not hasattr(self, "_sprite_tileset_window"):
+            self._sprite_tileset_window = SpriteTilesetWindow(self)
+        self._sprite_tileset_window.show()
+        self._sprite_tileset_window.raise_()
+        self._sprite_tileset_window.activateWindow()
 
 
 def main():
