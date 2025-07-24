@@ -49,6 +49,12 @@ class MainWindow(QMainWindow):
         tile_set = QAction("Load new tile-set", self)
         tile_set.triggered.connect(self.load_tileset)
         tile_set_menu.addAction(tile_set)
+        
+       # --- Sprite-tile-Set ---
+        sprite_tile_set_menu = menu_bar.addMenu("Sprite-tile-Set")
+        sprite_tile_set = QAction("Create new sprite tile-set", self)
+        sprite_tile_set.triggered.connect(self.create_sprite_tileset)
+        sprite_tile_set_menu.addAction(sprite_tile_set)
 
         # --- Help Menu ---
         help_menu = menu_bar.addMenu("Help")
@@ -66,6 +72,9 @@ class MainWindow(QMainWindow):
     # This function runs when you click the "Tile Data View" menu item
         self.editor.tile_data_window.show()
         self.editor.tile_data_window.raise_()
+    
+    def create_sprite_tileset(self):
+        pass
 
 
 def main():
