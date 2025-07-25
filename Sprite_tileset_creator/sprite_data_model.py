@@ -6,8 +6,8 @@ class SpriteDataModel:
         
         self.tile_size_x: int = 32
         self.tile_size_y: int = 32
-        self.grid_width: int = 6
-        self.grid_height: int = 15
+        self.grid_width: int = 9
+        self.grid_height: int = 18
          
         self.active_tileset_name: str = ""
         self.tilesets: dict[str, list[QPixmap]] = {}

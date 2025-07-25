@@ -21,12 +21,12 @@ class SpriteTilesetWindow(QMainWindow):
         self.selector_area = QScrollArea()
         self.selector_area.setWidgetResizable(True)
         self.selector_area.setWidget(self.selector)
-        self.selector_area.setFixedSize(500, 400)
+        self.selector_area.setFixedSize(700, 600)
 
         self.canvas_area = QScrollArea()
         self.canvas_area.setWidgetResizable(True)
         self.canvas_area.setWidget(self.canvas)
-        self.canvas_area.setFixedSize(300, 400)
+        self.canvas_area.setFixedSize(500, 600)
 
         # 3) Controls bar at the top
         self.controls = SpriteControls(self.model, self.selector, self.canvas)
