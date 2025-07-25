@@ -1,0 +1,21 @@
+{
+    "is_single_image_rotation": false,
+    "moving_up": 0,
+    "moving_up_right": 0,
+    "moving_right": 0,
+    "moving_down_right": 0,
+    "moving_down": 0,
+    "moving_down_left": 0,
+    "moving_left": 0,
+    "moving_up_left": 0,
+    "attack_1": 0,
+    "attack_2": 0,
+    "attack_3": 0,
+    "death": 0,
+    "climb": 0,
+    "idle": 0,
+    "run": 0,
+    "jump": 0,
+    "push": 0,
+    "object_animation": 0
+}

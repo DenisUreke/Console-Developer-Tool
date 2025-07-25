@@ -2,6 +2,7 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QScrollArea
 from Sprite_tileset_creator.sprite_data_model import SpriteDataModel
 from Sprite_tileset_creator.sprite_tile_selector import SpriteTileSelector
+from Sprite_tileset_creator.sprite_data_view import SpriteDataView
 from Sprite_tileset_creator.sprite_tile_canvas import SpriteCanvas
 from Sprite_tileset_creator.sprite_controls import SpriteControls
 
@@ -16,6 +17,7 @@ class SpriteTilesetWindow(QMainWindow):
         # 2) Left and right views
         self.selector = SpriteTileSelector(self.model)
         self.canvas   = SpriteCanvas(self.selector, self.model)
+        self.sprite_data_view = SpriteDataView()
 
         # wrap each in a scroll‑area
         self.selector_area = QScrollArea()
@@ -28,8 +30,13 @@ class SpriteTilesetWindow(QMainWindow):
         self.canvas_area.setWidget(self.canvas)
         self.canvas_area.setFixedSize(500, 600)
 
+        self.sprite_data = QScrollArea()
+        self.sprite_data.setWidgetResizable(True)
+        self.sprite_data.setWidget(self.sprite_data_view)
+        self.sprite_data.setFixedSize(200, 600)
+        
         # 3) Controls bar at the top
-        self.controls = SpriteControls(self.model, self.selector, self.canvas)
+        self.controls = SpriteControls(self.model, self.selector, self.canvas, self.sprite_data_view)
 
         # 4) Put it all together
         container = QWidget()
@@ -42,6 +49,7 @@ class SpriteTilesetWindow(QMainWindow):
         h = QHBoxLayout()                          # ← bottom two panels
         h.addWidget(self.selector_area)
         h.addWidget(self.canvas_area)
+        h.addWidget(self.sprite_data)
         main_layout.addLayout(h)
 
         # optional: menus or toolbars
@@ -50,3 +58,4 @@ class SpriteTilesetWindow(QMainWindow):
     def _create_menus(self):
         file = self.menuBar().addMenu("&File")
         file.addAction("Exit", self.close)
+        
