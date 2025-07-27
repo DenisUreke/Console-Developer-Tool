@@ -4,6 +4,7 @@ from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt
 from Main_editor_window.main_editor_window import MainEditorWindow
 from Sprite_tileset_creator.sprite_tileset_window import SpriteTilesetWindow
+from Sprite_tile_selector_window.sprite_selector_window import SpriteTilesetWindowMain
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -54,8 +55,12 @@ class MainWindow(QMainWindow):
        # --- Sprite-tile-Set ---
         sprite_tile_set_menu = menu_bar.addMenu("Sprite-tile-Set")
         sprite_tile_set = QAction("Create new sprite tile-set", self)
+        sprite_tile_set_load = QAction("Load sprite tile-set", self)
         sprite_tile_set.triggered.connect(self.create_sprite_tileset)
+        sprite_tile_set_load.triggered.connect(self.load_sprite_tilesets)
         sprite_tile_set_menu.addAction(sprite_tile_set)
+        sprite_tile_set_menu.addAction(sprite_tile_set_load)
+        
 
         # --- Help Menu ---
         help_menu = menu_bar.addMenu("Help")
@@ -81,6 +86,14 @@ class MainWindow(QMainWindow):
         self._sprite_tileset_window.show()
         self._sprite_tileset_window.raise_()
         self._sprite_tileset_window.activateWindow()
+    
+    def load_sprite_tilesets(self):
+        # keep a reference so it doesn’t get garbage-collected
+        if not hasattr(self, "_sprite_tileset_window_main"):
+            self._sprite_tileset_window_main = SpriteTilesetWindowMain(self)
+        self._sprite_tileset_window_main.show()
+        self._sprite_tileset_window_main.raise_()
+        self._sprite_tileset_window_main.activateWindow()
 
 
 def main():
