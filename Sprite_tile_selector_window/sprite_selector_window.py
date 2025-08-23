@@ -1,45 +1,36 @@
-# sprite_tileset_window.py
-from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QScrollArea
-from Models.setup_model import SetupModel
+from PySide6.QtWidgets import QDialog, QVBoxLayout
+from PySide6.QtGui import QPixmap
+from PySide6.QtCore import Qt
 from Sprite_tile_selector_window.sprite_selector import SpriteTileSelectorMain
-from Sprite_tileset_creator.sprite_controls import SpriteControls
+from Models.setup_model import SetupModel  # You already use this in SpriteTileSelectorMain
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from Models.setup_model import SetupModel
 
-class SpriteTilesetWindowMain(QMainWindow):
-    def __init__(self, parent=None):
+import os
+
+class SpriteTilesetWindowMain(QDialog):
+    def __init__(self, model: 'SetupModel', image_path: str, parent=None,):
         super().__init__(parent)
-        self.setWindowTitle("Sprite Tile‑Set Creator")
+        self.setWindowTitle("Sprite Tileset Viewer")
+        self.setMinimumSize(600, 400)
 
-        # 1) Shared model
-        self.model = SetupModel()
+        # --- 1. Create a temporary model just for this popup ---
+        self.model = model
 
-        # 2) Left and right views
-        self.selector = SpriteTileSelectorMain(self.model)
+        # Set default tile size (change as needed)
+        self.model.tile_size_x = 32
+        self.model.tile_size_y = 32
 
-        # wrap each in a scroll‑area
-        self.selector_area = QScrollArea()
-        self.selector_area.setWidgetResizable(True)
-        self.selector_area.setWidget(self.selector)
-        self.selector_area.setFixedSize(700, 600)
-        
-        # 3) Controls bar at the top
-        self.controls = SpriteControls(self.selector)
+        # --- 2. Load the image into the model ---
+        name = os.path.basename(image_path)
+        self.model.load_tileset(name, image_path)
 
-        # 4) Put it all together
-        container = QWidget()
-        self.setCentralWidget(container)
-        main_layout = QVBoxLayout(container)
-        main_layout.setContentsMargins(5,5,5,5)
-        main_layout.setSpacing(4)
+        # --- 3. Inject the model into the tile selector ---
+        self.selector = SpriteTileSelectorMain(model=self.model)
+        self.selector.display_active_tileset(name)
 
-        main_layout.addWidget(self.controls)       # ← top bar
-        h = QHBoxLayout()                          # ← bottom two panels
-        h.addWidget(self.selector_area)
-        main_layout.addLayout(h)
-
-        # optional: menus or toolbars
-        self._create_menus()
-
-    def _create_menus(self):
-        file = self.menuBar().addMenu("&File")
-        file.addAction("Exit", self.close)
-        
+        # --- 4. Layout ---
+        layout = QVBoxLayout()
+        layout.addWidget(self.selector)
+        self.setLayout(layout)

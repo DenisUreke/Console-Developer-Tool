@@ -1,17 +1,19 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QMenu
+from PySide6.QtWidgets import QApplication, QMainWindow, QMenu, QFileDialog
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt
 from Main_editor_window.main_editor_window import MainEditorWindow
 from Sprite_tileset_creator.sprite_tileset_window import SpriteTilesetWindow
 from Sprite_tile_selector_window.sprite_selector_window import SpriteTilesetWindowMain
+from Models.setup_model import SetupModel
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.setup_model = SetupModel()
         # Use your existing QWidget as the central widget
-        self.editor = MainEditorWindow()
+        self.editor = MainEditorWindow(self.setup_model)
         self.setCentralWidget(self.editor)
 
         self.setWindowTitle("Retro Tile Map Editor")
@@ -88,12 +90,24 @@ class MainWindow(QMainWindow):
         self._sprite_tileset_window.activateWindow()
     
     def load_sprite_tilesets(self):
-        # keep a reference so it doesn’t get garbage-collected
-        if not hasattr(self, "_sprite_tileset_window_main"):
-            self._sprite_tileset_window_main = SpriteTilesetWindowMain(self)
-        self._sprite_tileset_window_main.show()
-        self._sprite_tileset_window_main.raise_()
-        self._sprite_tileset_window_main.activateWindow()
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select Sprite Tilesheet",
+            r"C:\Sprite-Tilesets",
+            "PNG Files (*.png)"
+        )
+
+        if file_path:
+            # keep a reference so it’s not garbage-collected
+            if not hasattr(self, "_sprite_tileset_window_main"):
+                self._sprite_tileset_window_main = SpriteTilesetWindowMain(image_path=file_path, parent=self, model=self.setup_model)
+            else:
+                self._sprite_tileset_window_main.close()
+                self._sprite_tileset_window_main = SpriteTilesetWindowMain(image_path=file_path, parent=self, model=self.setup_model)
+
+            self._sprite_tileset_window_main.show()
+            self._sprite_tileset_window_main.raise_()
+            self._sprite_tileset_window_main.activateWindow()
 
 
 def main():

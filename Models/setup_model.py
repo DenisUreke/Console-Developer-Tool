@@ -19,6 +19,11 @@ class SetupModel:
         # Tracks the currently active tileset (for selector view)
         self.active_tileset_name: str = ""
         
+        # --- Sprite-related ---
+        self.sprite_images = {}   # name -> full QPixmap
+        self.sprites = {}         # name -> list of sliced QPixmaps
+        self.active_sprite_pixmap = None
+        
     def load_tileset(self, name: str, image_path: str):
         pixmap = QPixmap(image_path)
         if pixmap.isNull():
@@ -42,5 +47,7 @@ class SetupModel:
 
         if not self.active_tileset_name:
             self.active_tileset_name = name
+            
+            
 
         

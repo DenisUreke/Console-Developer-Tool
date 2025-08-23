@@ -32,19 +32,22 @@ class SpriteTileSelectorLabel(QLabel):
 class SpriteTileSelectorMain(QWidget):
     def __init__(self, model: SetupModel = None):
         super().__init__()
-        
+
+        if model is None:
+            raise ValueError("SpriteTileSelectorMain requires a SetupModel instance")
+
         self.model = model
         self.selected_index = None
         self.selected_name = None
         self.tiles = []
-        
+
         layout = QVBoxLayout(self)
-        
+
         # --- TileSet Toggle Buttons ---
         self.toggle_button_bar = QHBoxLayout()
-        self.toggle_buttons = {}  # Optional: keep references if needed
-        layout.addLayout(self.toggle_button_bar)  # Add button bar at the top
-        
+        self.toggle_buttons = {}
+        layout.addLayout(self.toggle_button_bar)
+
         # --- TileGrid Container ---
         self.container = QWidget()
         self.grid = QGridLayout(self.container)
@@ -104,6 +107,10 @@ class SpriteTileSelectorMain(QWidget):
         self.selected_name = name
         self.tiles[index].selected = True
         self.tiles[index].update()
+        
+        # Set active sprite pixmap for drawing
+        self.model.active_sprite_pixmap = self.model.sprites[name][index]
+
 
     def refresh_tileset_buttons(self):
         while self.toggle_button_bar.count():

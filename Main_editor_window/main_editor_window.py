@@ -12,11 +12,11 @@ from Top_button_menu.load_background_image_button import BackgroundButtons
 from Drag_and_scroll_area.drag_and_scroll_area import DragScrollArea
 
 class MainEditorWindow(QWidget):
-    def __init__(self):
+    def __init__(self, model):
         super().__init__()
         self.setWindowTitle("Tile Map Editor")
 
-        self.setup_model = SetupModel()
+        self.setup_model = model
         self.main_data_model = MainDataModel(self.setup_model)
         self.tile_selector = TileSelector(model=self.setup_model)
         self.tile_data_window = TileDataWindow()
